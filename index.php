@@ -7,8 +7,14 @@
 	<body>
     <?php
         print "fuck mehn";
-        foreach(){
-
+        $r = (object)array(
+                "name" => array("tony", "Angelina", "Yulia", "nastya"),
+            "games" => array("fifa", "bachata", "emotions", "positive")
+        );
+        foreach($r as $l){
+            foreach ($l as $m){
+                echo $m;
+            }
         }
     ?>
 	<script src="js/script.js"></script>
