@@ -37,30 +37,39 @@ class ManageUsers
     }
 
     function registerUser($values = array()){
-        $userExist = $this->con->prepare("select ip from users where ip = '{$values[0]}'");
+        $userExist = $this->con->prepare("select ip from users where email = '{$values[0]}'");
         $userExist->execute();
         if($userExist->rowCount() < 1) {
             $stmt = $this->con->prepare("INSERT INTO users (ip, name, email, password, date, time) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute($values);
             if ($stmt->rowCount() > 0) {
-                return true;
+                $regSuccess =  'registration successful!';
+                header('Location: /?log=true');
+
             }
         }else{
-            echo "user already exists<br>";
+            return "user already exists";
         }
-        return false;
+        return 'registration unsuccessful!';
     }
 
 
     function loginUser($values = array()){
-        $pass=password_hash($values[1], PASSWORD_BCRYPT);
-        $login = $this->con->prepare("select * from users where ip = '{$values[0]}' AND password = '{$pass}'");
-        $login->execute();
-        if($login->rowCount() == 1) {
-            echo "Welcome {$login->fetchAll()[0][1]}";
-        }else{
-            echo "Incorrect login or password";
+        if(!empty($values)){
+            $login = $this->con->prepare("select password from users where email = '{$values[0]}'");
+            $login->execute();
+            $hash = $login->fetchAll()[0][0];
+            if($login->rowCount() == 1) {
+                if(password_verify($values[1], $hash)){
+                    $_SESSION['logged_in'] = true;
+                    header('Location: home.php');
+                }else{
+                    return "Incorrect password or username";
+                }
+            }
         }
+
+        return "Please enter username and password";
     }
 
     function clean($string){
