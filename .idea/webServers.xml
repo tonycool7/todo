@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="f06f895f-cc20-4406-bada-120255ba4d69" name="tonycool" url="http://remote-todo.com">
+      <webServer id="f06f895f-cc20-4406-bada-120255ba4d69" name="tonycool" url="http://todo.com">
         <fileTransfer host="192.168.1.224" port="21" rootFolder="/home/todo">
           <option name="port" value="21" />
         </fileTransfer>
