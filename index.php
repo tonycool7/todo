@@ -18,7 +18,7 @@
         $email = $users->clean($_POST['email']);
         $error = "";
         if(!empty($name) && !empty($email) && !empty($pass) && !empty($repass)){
-            $registeration = $users->registerUser(array($email, $name, $email, $password, date('d-m-Y'), date('h:i:sa')));
+            $registeration = $users->registerUser(array($_SERVER['HTTP_USER_AGENT'], $name, $email, $password, date('d-m-Y'), date('h:i:sa')));
         }else{
             $error = "*compulsory";
         }
@@ -81,7 +81,9 @@
         </div>
         <?php endif;?>
         <?php if (!empty($_GET['log'])): ?>
-            <?php if (!empty($regSuccess)) echo $regSuccess;?>
+            <?php if (!empty($_GET['regSuccess'])): ?>
+                <div class="alert alert-success container col-md-6 col-md-offset-3"><?php echo $_GET['regSuccess']; ?></div>
+            <?php endif; ?>
             <div class="container col-md-6 col-md-offset-3 login-title"><h3>Login Here</h3></div>
             <div class="container col-md-6 col-md-offset-3 login-form">
             <form role="form" action="/?log=true" method="post">

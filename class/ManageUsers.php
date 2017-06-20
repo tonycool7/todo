@@ -9,14 +9,12 @@
 
 class ManageUsers
 {
-    private $db;
     private $con;
     private  $errorMessage;
 
     function __construct()
     {
-        $this->db = new dbconnect();
-        $this->con = $this->db->dbInstance();
+        $this->con = dbconnect::dbInstance();
     }
 
     function createTableUsers(){
@@ -32,8 +30,22 @@ class ManageUsers
         }
     }
 
+    function createTableTodo(){
+        try {
+            $stmt = $this->con->prepare("SELECT * FROM information_schema.tables WHERE table_schema = 'todo' AND table_name = 'todo' LIMIT 1;");
+            $stmt->execute();
+            if(empty($stmt->fetchAll())) {
+                $query2 = 'CREATE TABLE todo (id INT (11), username VARCHAR (100) NOT NULL, description VARCHAR (500) NOT NULL, due_date VARCHAR (100) NOT NULL, created_on VARCHAR (100) NOT NULL, PRIMARY KEY (id))';
+                $this->con->exec($query2);
+            }
+        }catch (PDOException $e){
+            die($e);
+        }
+    }
+
     function initialize(){
         $this->createTableUsers();
+        $this->createTableTodo();
     }
 
     function registerUser($values = array()){
@@ -43,9 +55,7 @@ class ManageUsers
             $stmt = $this->con->prepare("INSERT INTO users (ip, name, email, password, date, time) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute($values);
             if ($stmt->rowCount() > 0) {
-                $regSuccess =  'registration successful!';
-                header('Location: /?log=true');
-
+                header('Location: /?log=true & regSuccess=registration successful');
             }
         }else{
             return "user already exists";
@@ -56,9 +66,12 @@ class ManageUsers
 
     function loginUser($values = array()){
         if(!empty($values)){
-            $login = $this->con->prepare("select password from users where email = '{$values[0]}'");
+            $login = $this->con->prepare("select * from users where email = '{$values[0]}'");
             $login->execute();
-            $hash = $login->fetchAll()[0][0];
+            $hash = $login->fetchAll()[0][3];
+            $_SESSION['ip'] = $login->fetchAll()[0][0];
+            $_SESSION['name'] = $login->fetchAll()[0][1];
+            $_SESSION['email'] = $login->fetchAll()[0][2];
             if($login->rowCount() == 1) {
                 if(password_verify($values[1], $hash)){
                     $_SESSION['logged_in'] = true;
@@ -68,7 +81,6 @@ class ManageUsers
                 }
             }
         }
-
         return "Please enter username and password";
     }
 
@@ -79,6 +91,4 @@ class ManageUsers
     }
 
 }
-
-
 ?>

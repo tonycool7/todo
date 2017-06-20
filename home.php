@@ -26,28 +26,36 @@
         ?>
     <?php if ($_SESSION['logged_in']): ?>
     <main>
-        <div class="container col-md-8 col-md-offset-2">
-            <div class="row">
-                <h2>Welcome!</h2>
+        <div>
+            <div class="brand">TODO MAKER</div>
+            <div class="sidebar col-md-3">
+                <ul>
+                    <li><a>Inbox</a></li>
+                    <li><a>Read Later</a></li>
+                    <li><a>Important</a></li>
+                </ul>
             </div>
-            <div class="row">
-                <h2>My TODO list</h2>
-                <table class="table table-bordered table-responsive">
+            <div class="body-content col-md-9">
+                <div class="body-content__header">
+                    <span class="title">Manage TODO</span>
+                    <span class="btn btn-success add-new">+ Add New</span>
+                </div>
+                <table class="table table-bordered table-hovered table-responsive">
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Description</th>
+                            <th>Title</th>
+                            <th>Snippet</th>
                             <th>Due date</th>
-                            <th>Created On</th>
+                            <th>Time Left</th>
+                            <th>Progress</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <?php
+                            $todoList = todoManager::listTodo($_SESSION['email']);
+                        ?>
                     </tbody>
                 </table>
             </div>

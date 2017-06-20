@@ -22,6 +22,7 @@ class head
                     <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
                     <link rel="stylesheet" type="text/less" href="css/style.less">
                     <link rel="icon" type="image/png" href="images/favicon.png">
+                    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script&amp;subset=latin-ext" rel="stylesheet"> 
                     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
                     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.1/less.min.js"></script>
                     <title>Todo List</title>
